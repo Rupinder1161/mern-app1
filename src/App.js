@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import "bootstrap/dist/css/bootstrap.min.css";
 import Avatar from '@material-ui/core/Avatar';
+import Popover from '@material-ui/core/Popover'
 import { Manager, Reference, Popper } from 'react-popper'
 
 import { BrowserRouter as Router, Route} from "react-router-dom";
@@ -36,7 +37,6 @@ export class App extends Component {
             <Router>
             <div className="container">
             <Navbar />
-
            
             <br/>
             <Route path="/" exact component={ExercisesList} />
