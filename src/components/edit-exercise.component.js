@@ -12,6 +12,7 @@ export default class EditExercise extends Component {
     this.onChangeDuration = this.onChangeDuration.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onChangestatus = this.onChangestatus.bind(this)
 
     this.state = {
       username: '',
@@ -20,6 +21,7 @@ export default class EditExercise extends Component {
       date: new Date(),
       users: [],
       extracomments:'',
+      style:true,
       edit:true
     }
   }
@@ -31,8 +33,10 @@ export default class EditExercise extends Component {
           username: response.data.username,
           description: response.data.description,
           duration: response.data.duration,
-          date: new Date(response.data.date)
+          date: new Date(response.data.date),
+          style: response.data.style
         })   
+        // console.log(this.state.style)
       })
       .catch(function (error) {
         console.log(error);
@@ -76,6 +80,12 @@ export default class EditExercise extends Component {
     })
   }
 
+  onChangestatus(e){
+    this.setState({
+      style: e.target.value
+    })
+  }
+
   onSubmit(e) {
     e.preventDefault();
 
@@ -83,7 +93,8 @@ export default class EditExercise extends Component {
       username: this.state.username,
       description: this.state.description,
       duration: this.state.duration,
-      date: this.state.date
+      date: this.state.date,
+      style:this.state.style,
     }
 
     console.log(exercise);
@@ -91,7 +102,7 @@ export default class EditExercise extends Component {
     axios.post('http://localhost:5000/excercises/update/' + this.props.match.params.id, exercise)
       .then(res => console.log(res.data));
 
-    window.location = '/';
+     window.location = '/';
   }
 
   render() {
@@ -153,6 +164,19 @@ export default class EditExercise extends Component {
               onChange={this.onChangeDate}
             />
           </div>
+        </div>
+          
+        <div className="form-group">
+          <label>Update Status </label>
+        <div> 
+          <select
+          //  value={props.status} 
+          onChange={this.onChangestatus}
+          >
+            <option value = "false">Complaint Taken</option>
+            <option value = "true">Video Sent</option>
+          </select>
+        </div>
         </div>
 
         <div className="form-group">

@@ -38,10 +38,10 @@ export default class CreateUser extends Component {
   render() {
     return (
       <div>
-        <h3>Create New  Kit</h3>
+        <h3>Create New Product</h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group"> 
-            <label>Username: </label>
+            <label>Product Name: </label>
             <input  type="text"
                 required
                 className="form-control"

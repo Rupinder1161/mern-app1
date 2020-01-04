@@ -12,13 +12,15 @@ export default class CreateExercise extends Component {
     this.onChangeDuration = this.onChangeDuration.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-
+    this.onChangesoldate = this.onChangesoldate.bind(this)
     this.state = {
       username: '',
       description: '',
       duration: '',
       date: new Date(),
-      users: []
+      style: false,
+      users: [],
+      solddate:new Date(),
     }
   }
 
@@ -62,6 +64,13 @@ export default class CreateExercise extends Component {
     })
   }
 
+  onChangesoldate(date){  
+  this.setState({
+    solddate:date
+  })
+
+ }
+
   onSubmit(e) {
     e.preventDefault();
 
@@ -69,7 +78,8 @@ export default class CreateExercise extends Component {
       username: this.state.username,
       description: this.state.description,
       duration: this.state.duration,
-      date: this.state.date
+      date: this.state.date,
+      style:false
     }
 
     console.log(exercise);
@@ -77,16 +87,23 @@ export default class CreateExercise extends Component {
     axios.post('http://localhost:5000/excercises/add', exercise)
       .then(res => console.log(res.data));
 
-    window.location = '/';
+     window.location = '/';
   }
 
   render() {
+    // let date = new Date("11/07/2019")
+    console.log(this.state.solddate)
+    let difference =  this.state.date.getTime() -  this.state.solddate.getTime()
+    let differenceInDays = Math.round(difference / (1000 * 3600 * 24))
+    console.log(differenceInDays)
+    console.log(difference)
+     console.log(this.state.date)
     return (
     <div>
       <h3>Create complaint</h3>
       <form onSubmit={this.onSubmit}>
         <div className="form-group"> 
-          <label>Username: </label>
+          <label>Product Name: </label>
           <select ref="userInput"
               required
               className="form-control"
@@ -112,7 +129,7 @@ export default class CreateExercise extends Component {
               />
         </div>
         <div className="form-group">
-          <label>serial number: </label>
+          <label>serial: </label>
 
           {/* <select ref="userInput"
               required
@@ -129,6 +146,38 @@ export default class CreateExercise extends Component {
               onChange={this.onChangeDuration}
               />
         </div>
+
+
+        {/* <div className="form-group"> 
+          <label>Username: </label>
+          <select ref="userInput"
+              required
+              className="form-control"
+              value={this.state.username}
+              onChange={this.onChangeUsername}>
+              {
+                this.state.users.map(function(user) {
+                  return <option 
+                    key={user}
+                    value={user}>{user}
+                    </option>;
+                })
+              }
+          </select>
+        </div> */}
+
+
+
+        <div className="form-group">
+          <label>Purchasing-Date: </label> | <label style = {{color : (differenceInDays <= 90)? "green":"red"}}>{differenceInDays} days</label> <label style = {{visibility : (differenceInDays <= 90)? "hidden":"visible",color:"red"}}> Out of Warrenty</label>
+          <div>
+            <DatePicker
+              selected={this.state.solddate}
+              onChange={this.onChangesoldate}
+            />
+          </div>
+        </div>
+
         <div className="form-group">
           <label>Date: </label>
           <div>
